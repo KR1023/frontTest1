@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Login from './components/Login.vue'
+import RegTerms from './components/RegTerms.vue'
+import RegForm from './components/RegForm.vue'
+import VueRouter from 'vue-router'
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {path:'/', component: Login},
+        {path:'/register', component: RegTerms},
+        {path: '/regForm', component: RegForm}
+    ]
+})
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  router
 }
 </script>
 
@@ -23,6 +32,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-}
+  margin-top: 140px;}
 </style>
