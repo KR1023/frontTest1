@@ -6,12 +6,12 @@
     </p>
     <div id="loginForm" >
         <div id="inputWrapper">
-            <input @focus="focusId" @blur="focusIdOut" id="user_id" class="inputTxt" type="text" name="user_id" />
+            <input  v-model="info.id" @focus="focusId" @blur="focusIdOut" id="user_id" class="inputTxt" type="text" name="user_id" />
                 <span id="span_id">아이디</span>
-                <span v-show="idIsNull" id="warnId" class="inSpan">아이디를 입력해주세요.</span>
-            <input @focus="focusPwd" @blur="focusPwdOut" id="user_pwd" class="inputTxt" type="password" name="user_pwd" />
+                <span v-show="idIsNull" id="warnId" class="inSpan">아이디를 입력해 주세요.</span>
+            <input  v-model="info.pwd" @focus="focusPwd" @blur="focusPwdOut" id="user_pwd" class="inputTxt" type="password" name="user_pwd" />
                 <span id="span_pwd">비밀번호</span>
-                <span v-show="pwdIsNull" id ="warnPwd" class="inSpan">비밀번호를 입력해주세요.</span>
+                <span v-show="pwdIsNull" id ="warnPwd" class="inSpan">비밀번호를 입력해 주세요.</span>
             <div id="memInfo">
                 <a href="#">아이디/비밀번호 찾기</a>&nbsp;&nbsp;|&nbsp;
                 <router-link to="/register">회원가입</router-link>
@@ -23,11 +23,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'Login',
   data() {
       return {
+          count:0,
+          info:{
+            id:'',
+            pwd:''
+          },
           idIsNull: false,
           pwdIsNull: false
       }
@@ -40,8 +46,28 @@ export default {
       login(){
             const loginBtn = document.querySelector("#loginBtn");
             const wrapper = document.querySelector("#inputWrapper");
+            const userId = document.getElementById("user_id").value;
+            const userPwd = document.getElementById("user_pwd").value;
             loginBtn.style.top = "250px";
             wrapper.style.display = "block";
+            if(this.count > 0){
+                if(userId===''){
+                    alert("아이디를 입력해 주세요!");
+                }
+                else if(userPwd === ''){
+                    alert("비밀번호를 입력해 주세요!");
+                }else{
+                    axios.post("/api/login",this.info)
+                    .then((response)=>{
+                        console.log("전송 성공");
+                        this.info.id = response.data;
+                    })
+                    .catch(()=>{
+                        console.log("Error!");
+                    })
+                }
+            }
+            this.count++;
       },
       focusId(){
           const spanId = document.getElementById("span_id");

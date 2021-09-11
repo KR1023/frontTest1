@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
+    "css-loader": "^6.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.2"
   },
@@ -43,5 +44,17 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "## Vue Front-end Test Project 1",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KR1023/frontTest1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KR1023/frontTest1/issues"
+  },
+  "homepage": "https://github.com/KR1023/frontTest1#readme"
 }

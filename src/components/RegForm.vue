@@ -4,10 +4,12 @@
         <div id="form_wrap">
             <p class="sub">정보 입력</p>
             <div class="box">
+                <form method="POST" action="/member/addMember">
                 <table align="center">
+                
                     <tr>
                         <td>아이디</td>
-                        <td><input @focus="checkId" @blur="checkId" id="inputId" type="text" name="id" /></td>
+                        <td><input  v-model="member.id"  @blur="checkId" id="inputId" type="text" name="id" /></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -15,7 +17,7 @@
                     </tr>
                     <tr>
                         <td>비밀번호</td>
-                        <td><input @focus="checkPwd" @blur="checkPwd" id="inputPwd" type="password" name="pwd" /></td>
+                        <td><input v-model="member.pwd" @blur="checkPwd" id="inputPwd" type="password" name="pwd" /></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -23,7 +25,7 @@
                     </tr>
                     <tr>
                         <td>이름</td>
-                        <td><input @focus="checkName" @blur="checkName" id="inputName" type="text" name="name" /></td>
+                        <td><input v-model="member.name"  @blur="checkName" id="inputName" type="text" name="name" /></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -31,27 +33,34 @@
                     </tr>
                     <tr>
                         <td>이메일</td>
-                        <td><input @focus="checkEmail" @blur="checkEmail" id="inputEmail" type="email" name="email" /></td>
+                        <td><input v-model="member.email"  @blur="checkEmail" id="inputEmail" type="email" name="email" /></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td  v-show="emailIsNull" >이메일을 입력해 주세요!</td>
                     </tr>
                 </table>
+                </form>
             </div>
-            <router-link to="/" class="regBtn"><span @click="register">회원 가입</span></router-link>
-            
+            <div class="regBtn"><span @click="register">회원 가입</span></div>
+           
         </div>
     </div>
 </template>
 <script>
-
+import axios from 'axios';
 
 export default {
     
     name:"RegForm",
     data() {
         return{
+            member:{
+                id:"",
+                pwd:"",
+                name:"",
+                email:""
+            },
             idIsNull: false,
             pwdIsNull: false,
             nameIsNull: false,
@@ -94,12 +103,34 @@ export default {
             }
         },
         register(){
-            // const formId = document.getElementById('inputId');
-            // const formPwd = document.getElementById('inputPwd');
-            // const formName = document.getElementById('inputName');
-            // const formEmail = document.getElementById('inputEmail');
-            
-            alert("회원가입이 완료되었습니다!");
+            const fieldId = document.getElementById("inputId").value;
+            const fieldPwd = document.getElementById("inputPwd").value;
+            const fieldName = document.getElementById("inputName").value;
+            const fieldEmail = document.getElementById("inputEmail").value;
+            if((fieldId!=='')&&(fieldPwd!=='')&&(fieldName!=='')&&(fieldEmail!='')){
+                axios.post('http://localhost:8888/api/member/addMember', this.member)
+            .then((response)=>{
+                console.log(response);
+                alert("회원가입이 완료되었습니다!");
+                location.href='/';
+            })
+            .catch((e)=>{
+                console.log(e);
+                alert("Error!");
+            })
+            }else{
+                if(fieldId===''){
+                    alert("아이디를 입력해 주세요!");
+                }else if(fieldPwd===''){
+                    alert("비밀번호를 입력해 주세요!");
+                }else if(fieldName===''){
+                    alert("이름을 입력해 주세요!")
+                }else if(fieldEmail===''){
+                    alert("이메일을 입력해 주세요!")
+                }
+            }
+            // obj.action("/regTerms");
+            // obj.submit();
         }
     }
 }
@@ -144,6 +175,9 @@ export default {
                         
                         input{
                             border: 1px solid #e1e1e1;
+                            height: 20px;
+                            width:180px;
+                            font-size:17px;
                             
                             &:focus{
                                 outline: solid 1px #a7a7a7;
@@ -154,6 +188,8 @@ export default {
                     }
                     &:nth-child(2n){
                         color:red;
+                        font-size:12px;
+                        text-align: left;
                     }
                 }
             }
