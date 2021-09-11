@@ -8,6 +8,7 @@
 import Login from './components/Login.vue'
 import RegTerms from './components/RegTerms.vue'
 import RegForm from './components/RegForm.vue'
+import LoginConfirm from './components/LoginConfirm.vue'
 import VueRouter from 'vue-router'
 
 const router = new VueRouter({
@@ -15,7 +16,8 @@ const router = new VueRouter({
     routes: [
         {path:'/', component: Login},
         {path:'/register', component: RegTerms},
-        {path: '/regForm', component: RegForm}
+        {path: '/regForm', component: RegForm},
+        {path: '/home', component: LoginConfirm}
     ]
 })
 

@@ -22,8 +22,9 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import axios from 'axios'
+// import eventBus from '../eventBus.js'
 
 export default {
   name: 'Login',
@@ -34,15 +35,23 @@ export default {
             id:'',
             pwd:''
           },
+          sessionId: null,
+          result: null,
           idIsNull: false,
           pwdIsNull: false
       }
   },
- 
-  props: {
-    msg: String
-  },
   methods: {
+      getSession(){
+          axios.get('/api/getSession')
+          .then((response)=>{
+              this.sessionId = response.data;
+              console.log(this.sessionId);
+          })
+          .catch(()=>{
+              console.log("getSession Error!");
+          })
+      },
       login(){
             const loginBtn = document.querySelector("#loginBtn");
             const wrapper = document.querySelector("#inputWrapper");
@@ -60,10 +69,21 @@ export default {
                     axios.post("/api/login",this.info)
                     .then((response)=>{
                         console.log("전송 성공");
-                        this.info.id = response.data;
+                        this.result = response.data;
+                        console.log(this.result);
+                        if(this.result === 1){
+                            alert("로그인 성공!");
+                            // eventBus.$emit('id',this.id);
+                            this.getSession();
+                            location.href="/home";
+
+                        }else if(this.result !== 1){
+                            alert("아이디와 비밀번호를 확인해 주세요!");
+                        }
                     })
                     .catch(()=>{
                         console.log("Error!");
+                        location.href='/home';
                     })
                 }
             }
