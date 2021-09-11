@@ -6,10 +6,10 @@
     </p>
     <div id="loginForm" >
         <div id="inputWrapper">
-            <input  v-model="info.id" @focus="focusId" @blur="focusIdOut" id="user_id" class="inputTxt" type="text" name="user_id" />
+            <input  @keydown.enter='login' v-model="info.id" @focus="focusId" @blur="focusIdOut" id="user_id" class="inputTxt" type="text" name="user_id" />
                 <span id="span_id">아이디</span>
                 <span v-show="idIsNull" id="warnId" class="inSpan">아이디를 입력해 주세요.</span>
-            <input  v-model="info.pwd" @focus="focusPwd" @blur="focusPwdOut" id="user_pwd" class="inputTxt" type="password" name="user_pwd" />
+            <input  @keydown.enter='login' v-model="info.pwd" @focus="focusPwd" @blur="focusPwdOut" id="user_pwd" class="inputTxt" type="password" name="user_pwd" />
                 <span id="span_pwd">비밀번호</span>
                 <span v-show="pwdIsNull" id ="warnPwd" class="inSpan">비밀번호를 입력해 주세요.</span>
             <div id="memInfo">
@@ -24,7 +24,6 @@
 
 <script type="text/javascript">
 import axios from 'axios'
-// import eventBus from '../eventBus.js'
 
 export default {
   name: 'Login',
@@ -73,8 +72,8 @@ export default {
                         console.log(this.result);
                         if(this.result === 1){
                             alert("로그인 성공!");
-                            // eventBus.$emit('id',this.id);
                             this.getSession();
+                            
                             location.href="/home";
 
                         }else if(this.result !== 1){

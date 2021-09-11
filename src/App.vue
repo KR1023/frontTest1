@@ -11,6 +11,7 @@ import RegForm from './components/RegForm.vue'
 import LoginConfirm from './components/LoginConfirm.vue'
 import VueRouter from 'vue-router'
 
+
 const router = new VueRouter({
     mode: 'history',
     routes: [

@@ -1,23 +1,29 @@
 <template>
     <div id="wrap">
-        <h1>{{id}}님, 로그인 되었습니다!</h1>
+        <h1>{{info.accId}}님, 로그인 되었습니다!</h1>
     </div>
 </template>
 
 <script>
-// import eventBus from '../eventBus.js'
+import axios from 'axios'
+
 export default {
     name: 'LoginConfirm',
-    created: function(){
-        // eventBus.$on('id',(payload)=>{
-        //     this.id = payload;
-        // });
-    },
     data(){
         return{
-            id:''
+            info:{accId:'', sessionId:''}
         }
+    },
+    created: function(){
+        axios.get('/api/getId')
+        .then((response)=>{
+            this.info = response.data;
+            this.info.accId = response.data.accId;
+            this.info.sessionId = response.data.sessionId;
+        })
     }
+
+
     
 
 }
