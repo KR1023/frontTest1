@@ -25,6 +25,7 @@
 <script>
 import axios from 'axios'
 
+
 export default {
   name: 'Login',
   data() {
@@ -71,6 +72,7 @@ export default {
                             alert("로그인 성공!");
                             this.$session.start();
                             this.$session.set(this.info.id,this.$session.id());
+                            console.log(this.info.id);
                             location.href="/home";
 
                         }else if(this.result !== 1){
