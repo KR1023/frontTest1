@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import axios from 'axios'
 
 export default {
@@ -34,23 +34,20 @@ export default {
             id:'',
             pwd:''
           },
-          sessionId: null,
+          test:'test',
+          sessionId: '',
           result: null,
           idIsNull: false,
           pwdIsNull: false
       }
   },
+  beforeMount: function(){
+    if(this.$session.exists()){
+        location.replace("/home");
+    }
+  },
   methods: {
-      getSession(){
-          axios.get('/api/getSession')
-          .then((response)=>{
-              this.sessionId = response.data;
-              console.log(this.sessionId);
-          })
-          .catch(()=>{
-              console.log("getSession Error!");
-          })
-      },
+      
       login(){
             const loginBtn = document.querySelector("#loginBtn");
             const wrapper = document.querySelector("#inputWrapper");
@@ -67,13 +64,13 @@ export default {
                 }else{
                     axios.post("/api/login",this.info)
                     .then((response)=>{
-                        console.log("전송 성공");
+                        console.log("로그인 정보 전송 성공");
                         this.result = response.data;
                         console.log(this.result);
                         if(this.result === 1){
                             alert("로그인 성공!");
-                            this.getSession();
-                            
+                            this.$session.start();
+                            this.$session.set(this.info.id,this.$session.id());
                             location.href="/home";
 
                         }else if(this.result !== 1){

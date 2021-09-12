@@ -19,7 +19,8 @@ const router = new VueRouter({
         {path:'/register', component: RegTerms},
         {path: '/regForm', component: RegForm},
         {path: '/home', component: LoginConfirm}
-    ]
+    ],
+    props: true
 })
 
 export default {
