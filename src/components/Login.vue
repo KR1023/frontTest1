@@ -133,6 +133,10 @@ export default {
 
 <style scoped>
 
+.body{
+    margin-top: 140px;
+}
+
 #loginForm{
     width:400px;
     height: 340px;

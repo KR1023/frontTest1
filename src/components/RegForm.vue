@@ -136,6 +136,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    #wrap{
+        margin-top: 140px;
+    }
     h2{
         text-align:center;
     }
