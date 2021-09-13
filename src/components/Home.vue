@@ -1,33 +1,51 @@
 <template>
     <div id="wrap">
         <header>
-            <router-link class="router" to="/"><span class="material-icons">house</span></router-link>
+            <router-link class="router" to="/home"><span class="material-icons">house</span></router-link>
             <div class="setting">
-                <div id="info">{{id}}test &nbsp;&#124;&nbsp;</div>
+                <div id="info">{{id}} &nbsp;&#124;&nbsp;</div>
                 <div id="logout" @click="logout" ><span class="material-icons">sensor_door</span></div>
             </div>
         </header>
         <div class="sideBar">
             <ul class="leftSide">
-                <li>전체 글</li>
-                <li>글 작성</li>
-                <li>글 관리</li>
-                <li>카테고리</li>
+                <router-link to="/list-article" class="listWrap"><li>전체 글</li></router-link>
+                <router-link to="/add-article" class="listWrap"><li>글 작성</li></router-link>
+                <router-link to="/manage-article" class="listWrap"><li>글 관리</li></router-link>
+                <router-link to="/category" class="listWrap"><li>카테고리</li></router-link>
             </ul>
         </div>
+        <section class="displayWrap">
+            <router-view></router-view>
+        </section>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import VueRouter from 'vue-router'
+import ArticlesList from './routers/ArticlesList'
+import AddArticle from './routers/AddArticle'
 
+const router = new VueRouter({
+    mode:'history',
+    routes : [
+        { name: 'home', path:'/home', component: ArticlesList},
+        { name: 'list', path: '/list-article', component: ArticlesList},
+        { name: 'add', path: '/add-article', component: AddArticle}
+    ]
+})
 export default {
+    router,
+
     name: 'Home',
     data(){
         return{
             id:''
         }
     },
+
+
     beforeCreate: function(){
         axios.get("/api/getId")
         .then((response)=>{
@@ -54,10 +72,13 @@ export default {
 <style lang="scss" scoped>
 
     #wrap{
+        display:flex;
+        flex-wrap: wrap;
+        font-family: 'Noto Sans KR', sans-serif;
         header{
             width:100%;
             height: 40px;
-            background-color:red;
+            background-color:#303030;
 
             .router{
                 float: left;
@@ -68,7 +89,7 @@ export default {
                 
                 .material-icons{
                 text-decoration: none;
-                color: gray;
+                color: #f0f0f0;
                 font-size:30px;
                 }
             }
@@ -77,8 +98,8 @@ export default {
                 display: flex;
                 width:150px;
                 height:40px;
+                color:#f0f0f0;
                 line-height:40px;
-                background-color:yellow;
                 float:right;
                 margin-right: 20px;
                 justify-content: center;
@@ -87,16 +108,45 @@ export default {
                     cursor: pointer;
                 }
             }
-
-            
         }
 
         .sideBar{
             display:block;
             width:200px;
             height:1080px;
-            background-color:green;
+            background-color:#303030;
+            .leftSide{
+                float:left;
+                .listWrap{
+                    text-decoration: none;
 
+                }
+                li{
+                    display:block;
+                    width:200px;
+                    height:50px;
+                    background-color:#525252;
+                    text-align:left;
+                    line-height:50px;
+                    margin-top:1px;
+                    padding-left:20px;
+                    box-sizing:border-box;
+                    color:#eeeeee;
+                    &:hover{
+                        color:#525252;
+                        background-color:#eeeeee;
+                    }
+                }
+                
+            }
         }
+
+        .displayWrap{
+            width:70%;
+            height:800px;
+            margin:100px 0 0 75px;
+            padding: 0;
+        }
+        
     }
 </style>

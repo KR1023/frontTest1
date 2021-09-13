@@ -67,17 +67,30 @@ export default {
                     .then((response)=>{
                         console.log("로그인 정보 전송 성공");
                         this.result = response.data;
-                        console.log(this.result);
                         if(this.result === 1){
                             alert("로그인 성공!");
                             this.$session.start();
                             this.$session.set(this.info.id,this.$session.id());
+                            this.sessionId = this.$session.get(this.info.id);
+                            console.log(this.sessionId);
+                            
+                            axios.post("/api/setSession",this.sessionId)
+                            .then(()=>{
+                                console.log("세션 값을 서버로 전송합니다.");
+                                console.log(this.sessionId);
+                            })
+                            .catch(()=>{
+                                alert("세션 ID를 설정할 수 없습니다. 다시 시도해 주세요.");
+                            })
                             console.log(this.info.id);
                             location.href="/home";
 
                         }else if(this.result !== 1){
                             alert("아이디와 비밀번호를 확인해 주세요!");
                         }
+                    })
+                    .catch(()=>{
+                        alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
                     })
                     .catch(()=>{
                         console.log("Error!");
