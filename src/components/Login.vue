@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <h1>Welcome</h1>
+    <img class="logo" src="../assets/logo.png" alt="logo"/>
     <p>
       Simple Web Note
     </p>
@@ -67,11 +67,10 @@ export default {
                         console.log("로그인 정보 전송 성공");
                         this.result = response.data;
                         if(this.result === 1){
-                            alert("로그인 성공!");
+                            alert(this.info.id + "님, 로그인 되었습니다!");
                             this.$session.start();
                             this.$session.set(this.info.id,this.$session.id());
                             this.sessionId = this.$session.get(this.info.id);
-                            console.log(this.sessionId);
                             
                             axios.post("/api/setSession",this.sessionId)
                             .then(()=>{
@@ -146,7 +145,13 @@ export default {
 <style scoped>
 
 .body{
-    margin-top: 140px;
+    margin-top:10px;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    margin-top:100px;
 }
 
 #loginForm{

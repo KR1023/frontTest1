@@ -15,7 +15,7 @@
                     <td>번호</td><td>제목</td><td>카테고리</td><td>작성일</td>
                 </tr>
                 <tr></tr>
-                <tr class="articleRow" v-for="(article, index) in articles" :key="article" :index="index">
+                <tr class="articleRow" @click="viewArticle(article.articleNO)" v-for="(article, index) in articles" :key="article" :index="index">
                     <td width="10%">{{index + 1}}</td>
                     <td width="50%" align="left">{{article.title}}</td>
                     <td width="20%">{{article.category}}</td>
@@ -34,7 +34,7 @@ export default {
         return{
             id: null,
             articles:[
-                { articleNo: null, title:null, category:null, writeDate:null}
+                { articleNO: null, title:null, category:null, writeDate:null}
             ],
         }
     },
@@ -61,10 +61,15 @@ export default {
         
     },
     methods: {
-
+        viewArticle(payload){
+            axios.post("/api/board/sendArticleNO", payload)
+            .then(()=>{
+                console.log(payload);
+                this.$router.push("view-article")            
+            })
+        }
     }
 }
-
 </script>
 <style lang="scss" scoped>
     .wrap{
@@ -138,6 +143,7 @@ export default {
                         height:10px;
                         border-bottom:1px solid gray;
                     }
+                    
                 }
                 width:100%;
                 border-collapse: collapse;
@@ -153,6 +159,7 @@ export default {
                         background-color:#eeeeee;
                     }
                 }
+
             }
         }
     }

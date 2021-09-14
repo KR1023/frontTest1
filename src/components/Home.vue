@@ -26,13 +26,16 @@ import axios from 'axios'
 import VueRouter from 'vue-router'
 import ArticlesList from './routers/ArticlesList'
 import AddArticle from './routers/AddArticle'
+import ViewArticle from './routers/ViewArticle'
 
 const router = new VueRouter({
     mode:'history',
     routes : [
         { name: 'home', path:'/home', component: ArticlesList},
         { name: 'list', path: '/list-article', component: ArticlesList},
-        { name: 'add', path: '/add-article', component: AddArticle}
+        { name: 'add', path: '/add-article', component: AddArticle},
+        { name: 'view', path: '/view-article', component: ViewArticle}
+        
     ]
 })
 export default {
@@ -47,7 +50,7 @@ export default {
 
 
     beforeCreate: function(){
-        axios.get("/api/getId")
+        axios.post("/api/board/getId",this.$session.id())
         .then((response)=>{
             this.id = response.data
         })
