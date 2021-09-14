@@ -46,12 +46,8 @@ export default {
             axios.post("/api/board/getId",this.$session.id())
             .then((response)=>{
                 this.id = response.data;
-                console.log(response.data);
-                console.log(this.id);
-                console.log(this.$session.id());
                 axios.post('/api/listArticles',this.id)
                 .then((response)=>{
-                    console.log(response.data);
                     this.articles = response.data;
                 })
                 .catch(()=>{

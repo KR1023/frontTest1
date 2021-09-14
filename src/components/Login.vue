@@ -2,7 +2,7 @@
   <div class="body">
     <h1>Welcome</h1>
     <p>
-      현재 사이트는 공사 중입니다.
+      Simple Web Note
     </p>
     <div id="loginForm" >
         <div id="inputWrapper">
@@ -35,7 +35,6 @@ export default {
             id:'',
             pwd:''
           },
-          test:'test',
           sessionId: '',
           result: null,
           idIsNull: false,
