@@ -27,6 +27,7 @@ import VueRouter from 'vue-router'
 import ArticlesList from './routers/ArticlesList'
 import AddArticle from './routers/AddArticle'
 import ViewArticle from './routers/ViewArticle'
+import ModArticle from './routers/ModArticle'
 
 const router = new VueRouter({
     mode:'history',
@@ -34,7 +35,8 @@ const router = new VueRouter({
         { name: 'home', path:'/home', component: ArticlesList},
         { name: 'list', path: '/list-article', component: ArticlesList},
         { name: 'add', path: '/add-article', component: AddArticle},
-        { name: 'view', path: '/view-article', component: ViewArticle}
+        { name: 'view', path: '/view-article', component: ViewArticle},
+        { name: 'mod', path: '/mod-article', component: ModArticle},
         
     ]
 })
@@ -64,10 +66,12 @@ export default {
     },
     methods:{
         logout(){
+            if(window.confirm("로그아웃 하시겠습니까?")){
             axios.post('/api/logout', this.id);
             this.$session.destroy();
             alert("로그아웃 되었습니다!");
             location.replace("/");
+            }
         }
     }
 }

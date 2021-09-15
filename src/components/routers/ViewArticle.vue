@@ -1,21 +1,25 @@
 <template>
     <div class="wrap">
-        <h1 class="page">글 보기</h1>
+        <h1 class="page">{{article.title}}</h1>
         <div id="articleWrap">
-            <div class="title">
-                <span>제목</span>
-                <input type="text" id="title" placeholder="제목" :value="article.title" disabled/>
-            </div>
             <div class="category">
                 <span>카테고리</span>
-                <span>{{article.category}}
+                <span v-if="catIsNull">없음</span>
+                <span v-if="visible" class="categoryBox">{{article.category}}</span>
+            </div>
+            <div class="writeDate">
+                <span>작성일</span>
+                <span>{{article.writeDate}}</span>
+            </div>
+            <div class="submit">
+                <span @click="modifyArticle">수정</span>
+                <span @click="deleteArticle">삭제</span>
+                <span @click="backToList">글 목록</span>
             </div>
             <div class="content">
                 <textarea  cols="150" rows="25" wrap="hard" maxlength="5000" disabled :value="article.content"></textarea>
             </div>
-            <div class="submit">
-                <span>글 등록</span><span>취&nbsp;&nbsp;&nbsp;소</span>
-            </div>
+            
         
         </div>
     </div>
@@ -29,7 +33,9 @@ export default{
     ,
     data(){
         return{
-            article:{ArticleNO: null, title: null, category: null, content:null, writeDate: null}
+            article:{ArticleNO: null, title: null, category: null, content:null, writeDate: "2021-09-15"},
+            catIsNull: false,
+            visible: true
         }
     },
     beforeMount: function(){
@@ -39,8 +45,47 @@ export default{
             this.article = response.data;
             console.log("this.article : ");
             console.log(this.article);
-
+            if(this.article.category === null){
+                this.catIsNull = true;
+                this.visible = false;
+            }
         })
+    },
+    methods: {
+
+        // 전체 글 목록 페이지로 이동
+        backToList(){
+            this.$router.push("list-article");
+        },
+
+        // 글 수정 페이지로 이동
+        modifyArticle(){
+            if(window.confirm("글을 수정하시겠습니까?")){
+                axios.post("/api/board/send-article",this.article)
+                .then(()=>{
+                    this.$router.push("mod-article");
+                })
+                .catch(()=>{
+                    alert("정보를 불러오는 데 실패했습니다. 잠시 후에 다시 시도해 주세요.");
+                })
+            }else{
+                console.log("수정 취소");
+            }
+        },
+
+        // 글 삭제
+        deleteArticle(){
+            if(confirm("글을 삭제하시겠습니까?")){
+                axios.post("/api/board/delete-article",this.article.articleNO)
+                .then(()=>{
+                    alert("글을 삭제했습니다!");
+                    this.$router.push("list-article");
+                })
+                .catch(()=>{
+                    alert("글 삭제를 실패했습니다! 잠시 후에 다시 시도해 주세요.");
+                })
+            }
+        }
     }
     
 }
@@ -114,41 +159,53 @@ export default{
 
             .category{
                 margin-top:10px;
-                select{
-                    width:200px;
-                    font-size:22px;
-                    font-family: inherit;
-                    border:0px solid #eee;
-                    background-color: transparent;
-                    margin-left:10px;
+                font-size:24px;
+                .categoryBox{
+                    width:500px;
                 }
             }
+
+            .writeDate{
+                font-size:24px;
+                span{
+                    &:nth-child(2){
+                        width:200px;
+                    }
+                }
+            }
+
             .content{
                 textarea{
                     margin-top: 20px;
                     margin-left: 40px;
                     outline: none;
-                    border: 1px solid #d9d9d9;
+                    border: 0px solid #d9d9d9;
                     background-color: transparent;
                     resize: none;
                 }
             }
 
             .submit{
-                display:flex;
-                justify-content: center;
-                text-align: center;
+                text-align: left;
                 span{
                     display: inline-block;
-                    width:100px;
-                    height:36px;
-                    line-height: 36px;
+                    text-align:center;
+                    width:40px;
+                    height:30px;
+                    line-height: 30px;
                     background-color: transparent;
-                    font-size:20px;
+                    font-size:16px;
                     cursor: pointer;
                     &:hover{
                         background-color:#ddd;
                         color: #0032ff;
+                    }
+                    &:nth-child(2){
+                        margin-left:0;
+                    }
+                    &:nth-child(3){
+                        width:50px;
+                        margin-left: 10px;
                     }
                 }
             }

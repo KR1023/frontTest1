@@ -6,7 +6,6 @@
             <div class="box">
                 <form method="POST" action="/member/addMember">
                 <table align="center">
-                
                     <tr>
                         <td>아이디</td>
                         <td><input  v-model="member.id"  @blur="checkId" id="inputId" type="text" name="id" /></td>

@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <h1 class="page">글 작성</h1>
+        <h1 class="page">글 수정</h1>
         <hr />
         <div id="articleWrap">
             <div class="title">
@@ -18,7 +18,7 @@
                 <textarea v-model="article.content" cols="150" rows="25" wrap="hard" maxlength="5000"></textarea>
             </div>
             <div class="submit">
-                <span @click="addArticle">글 등록</span><span @click="backToList">취&nbsp;&nbsp;&nbsp;소</span>
+                <span @click="modArticle">수정하기</span><span @click="backToArticle">취&nbsp;&nbsp;&nbsp;소</span>
             </div>
         
         </div>
@@ -29,7 +29,7 @@ import axios from 'axios'
 
 export default{
 
-    name: "AddArticle"
+    name: "ModArticle"
     ,
     data(){
         return{
@@ -41,12 +41,18 @@ export default{
             selectedCat: null
         }
     },
+
     beforeMount: function(){
-        // recieve ID
-        if(this.getId === null){
-        axios.post("/api/board/getId", this.$session.id())
+        // receive article.
+        axios.get("/api/board/get-article")
         .then((response)=>{
-            this.article.id = response.data
+            console.log(response.data);
+            this.article = response.data;
+            console.log("this.article : ");
+            console.log(this.article);
+            if(this.article.category === null){
+                this.catIsNull = true;
+            }
             // receive category List
             axios.post("/api/board/getCategory",this.$session.id())
             .then((response)=>{
@@ -56,39 +62,37 @@ export default{
                 alert("데이터 수신 오류");
             })
         })
-        .catch(()=>{
-            alert("정보를 불러오는 데 실패하였습니다. 다시 로그인 해주세요.");
-            location.href="/";
-        })
-        }
-        if(!this.$session.exists()){
-            alert("로그인이 필요합니다! 로그인 페이지로 이동합니다.");
-            location.replace("/");
-        }
     },
-
     methods: {
         selectCategory(){
             console.log("선택된 카테고리 : ");
             console.log(this.article.category);
-            
         },
-        
 
-        // 글 등록
-        addArticle(){
-            axios.post("/api/board/addArticle",this.article)
+        // 글 수정
+        modArticle(){
+            axios.post("/api/board/mod-article",this.article)
             .then(()=>{
-                alert('글을 등록했습니다!');
-                location.href="/home";
+                alert('글을 수정했습니다!');
+                axios.post("/api/board/sendArticleNO",this.article.articleNO)
+                .then(()=>{
+                    this.$router.push("/view-article");
+                })
             })
             .catch(()=>{
-                alert("글 등록에 실패했습니다. 잠시 후에 다시 시도해 주세요.");
+                alert("글 수정에 실패했습니다. 잠시 후에 다시 시도해 주세요.");
             })
         },
 
-        backToList(){
-            location.href="/home";
+        // 글 수정 취소
+        backToArticle(){
+            axios.post("/api/board/sendArticleNO",this.article.articleNO)
+            .then(()=>{
+                this.$router.push("/view-article");
+            })
+            .catch(()=>{
+                alert("오류가 발생했습니다! 잠시 후에 다시 시도해 주세요.");
+            })
         }
     }
 }
