@@ -1,0 +1,77 @@
+[33mcommit f2837069735ff192903734d83a1897be4f88a7a0[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Wed Sep 15 22:07:53 2021 +0900
+
+    mod-article, delete-article
+
+[33mcommit 4a10cebeb5d6504307bada0f0cd0e44716bad8be[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Tue Sep 14 22:28:54 2021 +0900
+
+    view-article
+
+[33mcommit c3ba981323a5a96c0d6aa67690472d1327b99771[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Tue Sep 14 17:14:54 2021 +0900
+
+    add-artilce
+
+[33mcommit 0a5cb7810d03c1ae7c4f2c9612a257292a21b305[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Mon Sep 13 22:30:37 2021 +0900
+
+    list-article
+
+[33mcommit 6af9be386a0cd906a0a9752e61bc000454619501[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sun Sep 12 22:59:05 2021 +0900
+
+    home page
+
+[33mcommit 55a4f0bff0920cf10856162c4afab92375af0de8[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sun Sep 12 16:06:59 2021 +0900
+
+    login
+
+[33mcommit ae00696d68d6b67fd4d3e42d8fc33f94becccd9e[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sun Sep 12 13:58:45 2021 +0900
+
+    login test
+
+[33mcommit c128fe7558064a7db90099fcaeed2551174e902d[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sat Sep 11 18:30:10 2021 +0900
+
+    login-test
+
+[33mcommit d47b389c04efde21b45e5b9e13ccc9622dd329b5[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sat Sep 11 17:14:36 2021 +0900
+
+    login
+
+[33mcommit dd3ec17dcd374a985b76551ca8f4bf85ff9a2a1f[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Sat Sep 11 14:44:22 2021 +0900
+
+    connect backend
+
+[33mcommit 61e07780b13c5bca20f976cf5b213b9b7dc01aad[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Fri Sep 10 16:50:31 2021 +0900
+
+    readme.md
+
+[33mcommit 773a08ac6f141790acaf281dccc25fe79dd7a925[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Fri Sep 10 16:43:04 2021 +0900
+
+    front-test1
+
+[33mcommit 0dab9e2c847f70bc86ee598de89ee43d739621e4[m
+Author: KR1023 <shyoo1023@gmail.com>
+Date:   Thu Sep 9 18:53:07 2021 +0900
+
+    init
