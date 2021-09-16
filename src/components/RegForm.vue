@@ -38,6 +38,9 @@
 <script>
 import axios from 'axios';
 
+const regId = /^[a-z0-9]{4,12}$/;
+// const regPwd = /^[]
+
 export default {
     
     name:"RegForm",
@@ -61,7 +64,9 @@ export default {
     methods: {
 
         checkId(){
-                if(this.member.id !== ''){
+                
+                
+                if(this.member.id !== '' && regId.test(this.member.id)){
                     axios.post("/api/member/checkId",this.member.id)
                     .then((response)=>{
                         this.result = response.data;
@@ -72,10 +77,13 @@ export default {
                     .catch(()=>{
                         console.log("중복 확인 오류");
                     })
+                }else if(this.member.id !== '' && (regId.test(this.member.id) === false)){
+                    this.message = "4~12 자리의 소문자와 숫자만 사용할 수 있습니다.";
                 }else{
-                    this.message = "아이디를 입력해 주세요!"
+                    this.message = "아이디를 입력해 주세요!";
                 }
-
+                console.log("정규식 패스 여부");
+                console.log(regId.test(this.member.id));
                 
         },
 
@@ -84,6 +92,8 @@ export default {
                 this.idCheck = true;
             }else{
                 if(this.result === 1){
+                    this.idCheck = true;
+                }else if(!regId.test(this.member.id)){
                     this.idCheck = true;
                 }else{
                     this.idCheck = false;
@@ -180,7 +190,7 @@ export default {
                 display:inline-block;
                 width:200px;
                 height:40px;
-                font-size:26px;
+                font-size:22px;
                 text-align: left;
                 margin:1px;
                 margin-left:30px;
@@ -210,13 +220,14 @@ export default {
                 height: 40px;
                 span {
                     display: inline-block;
-                    width: 200px;
+                    width: 270px;
                     height: 40px;
+                    font-size:12px;
                     line-height: 40px;
                     text-align: left;
                     font-style: bold;
                     color: red;
-                    margin-left:80px;
+                    margin-left:120px;
                 }
             }
 
