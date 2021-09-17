@@ -2,12 +2,12 @@
     <div class="wrap">
         <h1 class="page">전체 글</h1>
         <hr />
-        <div id="search">
+        <div id="searchBox">
             <select id="selectSearch">
-                <option value="title">제목</option>
+                <option value="title" selected>제목</option>
                 <option value="category">카테고리</option>
             </select>
-            <input type="text" id="inputSearch" placeholder="검색어 입력" /><span class="material-icons">search</span>
+            <input v-model="word.keyword" @keyup.enter="searchArticle" type="text" id="inputSearch" placeholder="검색어 입력" /><span @click="searchArticle" class="material-icons">search</span>
         </div>
         <div id="articles">
             <table border="0" align="center" >
@@ -28,6 +28,8 @@
 <script>
 import axios from 'axios'
 
+
+
 export default {
     name: "ArticleList",
     data(){
@@ -36,12 +38,11 @@ export default {
             articles:[
                 { articleNO: null, title:null, category:null, writeDate:null}
             ],
+            word:{keyword:''}
         }
     },
 
-    mounted: function(){
-        console.log(this.id);
-        console.log(this.$session.id());
+    beforeMount: function(){
         if(this.id === null){
             axios.post("/api/board/getId",this.$session.id())
             .then((response)=>{
@@ -59,6 +60,7 @@ export default {
             })
         }
         
+        console.log(this.id);
     },
     methods: {
         viewArticle(payload){
@@ -67,6 +69,50 @@ export default {
                 console.log(payload);
                 this.$router.push("view-article")            
             })
+        },
+
+        searchArticle(){
+            const selectBox = document.getElementById("selectSearch").value;
+
+            if(this.word.keyword === ''){
+                axios.post("/api/board/getId",this.$session.id())
+                .then((response)=>{
+                    this.id = response.data;
+                    axios.post('/api/listArticles',this.id)
+                    .then((response)=>{
+                        this.articles = response.data;
+                    })
+                    .catch(()=>{
+                        alert("정보를 불러오는 데 실패했습니다.");
+                    })
+                })
+                .catch(()=>{
+                    console.log("Failed Recieving ID");
+                })
+            }else{
+                axios.post("api/board/getId",this.$session.id())
+                .then((response)=>{
+                    this.id = response.data;
+
+                    if(selectBox == "title"){
+                        axios.post("/api/board/search-title",this.word)
+                        .then((response)=>{
+                            this.articles = response.data;
+                        })
+                        .catch(()=>{
+                            alert("검색을 실패했습니다. 잠시 후에 다시 시도해 주세요.");
+                        })
+                    }else if(selectBox == "category"){
+                        axios.post("/api/board/search-category",this.word)
+                        .then((response)=>{
+                            this.articles = response.data;
+                        })
+                        .catch(()=>{
+                            alert("검색을 실패했습니다. 잠시 후에 다시 시도해 주세요.");
+                        })
+                    }
+                })
+            }
         }
     }
 }
@@ -95,7 +141,7 @@ export default {
             border-bottom: 1px solid #000;
         }
 
-        #search{
+        #searchBox{
             width: 100%;
             height: 40px;
             display:flex;

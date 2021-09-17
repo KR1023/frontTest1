@@ -106,7 +106,6 @@ export default{
         h1{
             display:inline;
             font-size: 38px;
-
         }
         .page{
             font-size:38px;

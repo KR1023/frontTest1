@@ -35,7 +35,7 @@ export default{
         return{
             article:{ArticleNO: null, title: null, category: null, content:null, writeDate: "2021-09-15"},
             catIsNull: false,
-            visible: true
+            visible: true,
         }
     },
     beforeMount: function(){

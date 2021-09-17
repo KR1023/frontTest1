@@ -17,7 +17,7 @@
                 <router-link to="/register">회원가입</router-link>
             </div>
         </div>
-        <div @click="login" id="loginBtn" class="formBtn"><span>Sign in</span></div>     
+        <div @click="login" id="loginBtn" class="formBtn"><span>로그인</span></div>     
     </div>
   </div>
 </template>

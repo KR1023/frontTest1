@@ -3,7 +3,7 @@
         <header>
             <router-link class="router" to="/home"><span class="material-icons">house</span></router-link>
             <div class="setting">
-                <div id="info">{{id}} &nbsp;&#124;&nbsp;</div>
+                <div id="info" @click="modMember">{{id}} &nbsp;&#124;&nbsp;</div>
                 <div id="logout" @click="logout" ><span class="material-icons">sensor_door</span></div>
             </div>
         </header>
@@ -28,6 +28,8 @@ import ArticlesList from './routers/ArticlesList'
 import AddArticle from './routers/AddArticle'
 import ViewArticle from './routers/ViewArticle'
 import ModArticle from './routers/ModArticle'
+import ModMember from './routers/ModMember'
+import Category from './routers/Category'
 
 const router = new VueRouter({
     mode:'history',
@@ -37,6 +39,8 @@ const router = new VueRouter({
         { name: 'add', path: '/add-article', component: AddArticle},
         { name: 'view', path: '/view-article', component: ViewArticle},
         { name: 'mod', path: '/mod-article', component: ModArticle},
+        { name: 'modMember', path: '/mod-member', component: ModMember},
+        { name: 'category', path: '/category', component: Category}
         
     ]
 })
@@ -72,6 +76,13 @@ export default {
             alert("로그아웃 되었습니다!");
             location.replace("/");
             }
+        },
+
+        modMember(){
+            axios.post("/api/member/get-member",this.$session.id())
+            .then(()=>{
+                this.$router.push("mod-member");
+            })
         }
     }
 }
@@ -110,6 +121,9 @@ export default {
                 float:right;
                 margin-right: 20px;
                 justify-content: center;
+                #info{
+                    cursor: pointer;
+                }
                 #logout{
                     line-height:53px;
                     cursor: pointer;

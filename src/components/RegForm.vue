@@ -5,31 +5,31 @@
                 
             <div class="lineBox">
                 <span class="spanBox">아이디</span>
-                <input class="inputBox" v-model="member.id" @keyup="checkId" @change="checkId();" @click="showResult" @keyup.tab="showResult" @blur="showResult" id="inputId" type="text" name="id" />
+                <input class="inputBox" v-model="member.id" @keyup="checkId" @change="checkId();" @click="showResult" @keyup.tab="showResult" @blur="showResult" id="inputId" type="text" name="id" maxlength="20"/>
             </div>
             <div class="infoBox">
-                <span v-if="idCheck">{{message}}</span>
+                <span v-if="idCheck">{{idMessage}}</span>
             </div>
             <div class="lineBox">
                 <span class="spanBox">비밀번호</span>
-                <input class="inputBox" v-model="member.pwd" @blur="checkPwd" id="inputPwd" type="password" name="pwd" />
+                <input class="inputBox" v-model="member.pwd" @change="checkPwd" @blur="checkPwd" id="inputPwd" type="password" name="pwd" maxlength="30"/>
             </div>
             <div class="infoBox">
-                <span  v-show="pwdIsNull" >비밀번호를 입력해 주세요!</span>
+                <span  v-show="pwdCheck" >{{pwdMessage}}</span>
             </div>
             <div class="lineBox">
                 <span class="spanBox">이름</span>
-                <input class="inputBox" v-model="member.name"  @blur="checkName" id="inputName" type="text" name="name" />
+                <input class="inputBox" v-model="member.name" @change="checkName" @blur="checkName" id="inputName" type="text" name="name" maxlength="10"/>
             </div>
             <div class="infoBox">
-                <span  v-show="nameIsNull" >이름을 입력해 주세요!</span>
+                <span  v-show="nameCheck" >{{nameMessage}}</span>
             </div>
             <div class="lineBox">
                 <span class="spanBox">이메일</span>
-                <input class="inputBox" v-model="member.email"  @blur="checkEmail" id="inputEmail" type="email" name="email" />
+                <input class="inputBox" v-model="member.email"  @change="checkEmail" @blur="checkEmail" id="inputEmail" type="email" name="email" maxlength="50"/>
             </div>
             <div class="infoBox">
-                <span v-show="emailIsNull" >이메일을 입력해 주세요!</span>
+                <span v-show="emailCheck" >{{emailMessage}}</span>
             </div>
             <div class="regBtn"><span @click="register">회원 가입</span></div>
         </div>
@@ -38,8 +38,10 @@
 <script>
 import axios from 'axios';
 
-const regId = /^[a-z0-9]{4,12}$/;
-// const regPwd = /^[]
+const regId = /^[a-z0-9]{4,20}$/;
+const regPwd = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,30}$/;
+const regName = /^[a-zA-Z가-힣]{2,10}$/;
+const regEmail = /^[a-zA-Z0-9]*[@]{1}[a-zA-Z0-9]*[.]{1}[a-zA-Z]{1,3}$/;
 
 export default {
     
@@ -53,38 +55,35 @@ export default {
                 email: ''
             },
             idCheck: false,
-            message: "",
-
+            idMessage: "",
+            pwdMessage: "",
+            nameMessage: "",
+            emailMessage: "",
             result: null,
-            pwdIsNull: false,
-            nameIsNull: false,
-            emailIsNull: false
+            pwdCheck: false,
+            nameCheck: false,
+            emailCheck: false
         }
     },
     methods: {
 
         checkId(){
-                
-                
-                if(this.member.id !== '' && regId.test(this.member.id)){
-                    axios.post("/api/member/checkId",this.member.id)
-                    .then((response)=>{
-                        this.result = response.data;
-                        if(this.result === 1){
-                            this.message = "이미 존재하는 아이디입니다!";
-                        }
-                    })
-                    .catch(()=>{
-                        console.log("중복 확인 오류");
-                    })
-                }else if(this.member.id !== '' && (regId.test(this.member.id) === false)){
-                    this.message = "4~12 자리의 소문자와 숫자만 사용할 수 있습니다.";
-                }else{
-                    this.message = "아이디를 입력해 주세요!";
-                }
-                console.log("정규식 패스 여부");
-                console.log(regId.test(this.member.id));
-                
+            if(this.member.id !== '' && regId.test(this.member.id)){
+                axios.post("/api/member/checkId",this.member.id)
+                .then((response)=>{
+                    this.result = response.data;
+                    if(this.result === 1){
+                        this.idMessage = "이미 존재하는 아이디입니다!";
+                    }
+                })
+                .catch(()=>{
+                    console.log("중복 확인 오류");
+                })
+            }else if(this.member.id !== '' && (regId.test(this.member.id) === false)){
+                this.idMessage = "4~20 자리의 소문자와 숫자만 사용할 수 있습니다.";
+            }else{
+                this.idMessage = "아이디를 입력해 주세요!";
+            }
         },
 
         showResult(){
@@ -102,27 +101,40 @@ export default {
         },
 
         checkPwd(){
-            const form = document.getElementById("inputPwd");  
-            if(form.value === null || form.value === ''){
-                this.pwdIsNull = true;
+            const form = document.getElementById("inputPwd").value;  
+            if(form === null || form === ''){
+                this.pwdMessage="비밀번호를 입력해 주세요!";
+                this.pwdCheck = true;
+            }else if(form !== null && (regPwd.test(this.member.pwd)===false)){
+                this.pwdMessage="8~30 자리의 대소문자, 특수문자를 입력해 주세요.";
+                this.pwdCheck = true;
             }else{
-                 this.pwdIsNull= false;
+                 this.pwdCheck= false;
             }
         },
+
         checkName(){
-            const form = document.getElementById("inputName");  
-            if(form.value === null || form.value === ''){
-                this.nameIsNull = true;
+            const form = document.getElementById("inputName").value;  
+            if(form === null || form === ''){
+                this.nameMessage="이름을 입력해 주세요!";
+                this.nameCheck = true;
+            }else if(form !== null && (regName.test(this.member.name)===false)){
+                this.nameMessage="영문 또는 한글만 입력해 주세요.";
+                this.nameCheck = true;
             }else{
-                 this.nameIsNull= false;
+                this.nameCheck = false;
             }
         },
         checkEmail(){
-            const form = document.getElementById("inputEmail");  
-            if(form.value === null || form.value === ''){
-                this.emailIsNull = true;
+            const form = document.getElementById("inputEmail").value;  
+            if(form === null || form === ''){
+                this.emailMessage="이메일을 입력해 주세요!";
+                this.emailCheck = true;
+            }else if(form !== null && (regEmail.test(this.member.email)===false)){
+                this.emailMessage = "올바른 이메일 형식을 입력해 주세요.";
+                this.emailCheck= true;
             }else{
-                 this.emailIsNull= false;
+                this.emailCheck = false;
             }
         },
         register(){
@@ -130,30 +142,38 @@ export default {
             const fieldPwd = document.getElementById("inputPwd").value;
             const fieldName = document.getElementById("inputName").value;
             const fieldEmail = document.getElementById("inputEmail").value;
+            if(this.idCheck == true){
+                alert("아이디를 확인해 주세요!");
+                return;
+            }
+
+            if(this.pwdCheck == true){
+                alert("비밀번호를 확인해 주세요!");
+                return;
+            }
+
+            if(this.nameCheck == true){
+                alert("이름을 확인해 주세요!");
+                return;
+            }
+
+            if(this.emailCheck == true){
+                alert("이메일을 확인해 주세요!");
+                return;
+            }
+
             if((fieldId!=='')&&(fieldPwd!=='')&&(fieldName!=='')&&(fieldEmail!='')){
                 axios.post('http://localhost:8888/api/member/addMember', this.member)
-            .then((response)=>{
-                console.log(response);
-                alert("회원가입이 완료되었습니다!");
-                location.href='/';
-            })
-            .catch((e)=>{
-                console.log(e);
-                alert("Error!");
-            })
-            }else{
-                if(fieldId===''){
-                    alert("아이디를 입력해 주세요!");
-                }else if(fieldPwd===''){
-                    alert("비밀번호를 입력해 주세요!");
-                }else if(fieldName===''){
-                    alert("이름을 입력해 주세요!")
-                }else if(fieldEmail===''){
-                    alert("이메일을 입력해 주세요!")
-                }
+                .then((response)=>{
+                    console.log(response);
+                    alert("회원가입이 완료되었습니다!");
+                    location.href='/';
+                })
+                .catch((e)=>{
+                    console.log(e);
+                    alert("Error!");
+                })
             }
-            // obj.action("/regTerms");
-            // obj.submit();
         }
     }
 }
