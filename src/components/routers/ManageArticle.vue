@@ -214,6 +214,9 @@ export default {
 
         #articles{
             margin-top: 10px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             table{
                 tr{
                     &:nth-child(2){

@@ -32,7 +32,7 @@
                 <span v-if="emailCheck">{{emailMessage}}</span>
             </div>
             <div class="submit">
-                <span @click="modMember" >정보 수정</span><span @click="backToList">취&nbsp;&nbsp;&nbsp;소</span>
+                <span @click="deleteMember">회원 탈퇴</span><span @click="modMember" >정보 수정</span><span @click="backToList">취&nbsp;&nbsp;&nbsp;소</span>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@ export default{
     data(){
         return{
             member:{
-                id:'test', pwd:'', name:'', email:''
+                id:'', pwd:'', name:'', email:''
             },
             pwdMessage: "",
             nameMessage: "",
@@ -105,6 +105,20 @@ export default{
                 this.emailCheck= true;
             }else{
                 this.emailCheck = false;
+            }
+        },
+
+        deleteMember(){
+            if(confirm("계정을 삭제하시겠습니까?")){
+                axios.post("/api/member/delete-member",this.member.id)
+                .then(()=>{
+                    alert("계정을 삭제했습니다.");
+                    this.$session.destroy();
+                    location.replace("/");
+                })
+                .catch(()=>{
+                    alert("오류가 발생했습니다! 잠시 후에 다시 시도해 주세요.");
+                })
             }
         },
 
