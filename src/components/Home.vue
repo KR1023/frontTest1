@@ -30,6 +30,7 @@ import ViewArticle from './routers/ViewArticle'
 import ModArticle from './routers/ModArticle'
 import ModMember from './routers/ModMember'
 import Category from './routers/Category'
+import ManageArticle from './routers/ManageArticle.vue'
 
 const router = new VueRouter({
     mode:'history',
@@ -40,7 +41,8 @@ const router = new VueRouter({
         { name: 'view', path: '/view-article', component: ViewArticle},
         { name: 'mod', path: '/mod-article', component: ModArticle},
         { name: 'modMember', path: '/mod-member', component: ModMember},
-        { name: 'category', path: '/category', component: Category}
+        { name: 'category', path: '/category', component: Category},
+        { name: 'manageArticle', path: '/manage-article', component: ManageArticle}
         
     ]
 })
