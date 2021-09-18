@@ -13,7 +13,7 @@
                 <div class="listItem">
                     <div class="itemBox" v-for="item in categoryList" :key="item">
                         <span class="categoryItem" >{{item.name}}</span>
-                        <span class="deleteCategory">X</span>
+                        <span class="deleteCategory" @click="deleteCategory(item)">X</span>
                     </div>
                 </div>
             </div>
@@ -91,8 +91,26 @@ export default {
             }
         },
 
-        deleteCategory(){
-            
+        deleteCategory(payload){
+            axios.post('/api/board/delete-category',payload)
+            .then(()=>{
+            console.log("삭제한 카테고리 : ", payload);
+            axios.post("/api/board/getId",this.$session.id())
+            .then((response)=>{
+                this.category.id = response.data;
+            })
+            .catch(()=>{
+                alert("ID 수신 실패");
+            })
+
+            axios.post("/api/board/getCategory",this.$session.id())
+                .then((response)=>{
+                    this.categoryList = response.data;
+                })
+                .catch(()=>{
+                    alert("데이터 수신 오류");
+                })    
+            })
         }
     }
 }
