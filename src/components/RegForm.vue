@@ -163,7 +163,7 @@ export default {
             }
 
             if((fieldId!=='')&&(fieldPwd!=='')&&(fieldName!=='')&&(fieldEmail!='')){
-                axios.post('http://localhost:8888/api/member/addMember', this.member)
+                axios.post('/api/member/addMember', this.member)
                 .then((response)=>{
                     console.log(response);
                     alert("회원가입이 완료되었습니다!");

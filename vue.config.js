@@ -1,6 +1,7 @@
 module.exports={
 	outputDir: "../src/main/resources/static",
-	indexPath: "../templates/index.html",
+	indexPath: "../static/index.html",
+    // publicPath: '/',
     devServer: {
             // compress: true,
             // disabledHostCheck: true,

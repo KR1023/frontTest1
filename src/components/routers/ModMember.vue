@@ -63,6 +63,7 @@ export default{
         axios.get("/api/member/get-info")
         .then((response)=>{
             this.member = response.data;
+            this.member.pwd = "";
         })
         .catch(()=>{
             alert("회원 정보를 불러오는 데 실패했습니다. 잠시 후에 다시 시도해 주세요.");
@@ -124,9 +125,9 @@ export default{
 
         modMember(){
 
-            const fieldPwd = document.getElementById("inputPwd").value;
-            const fieldName = document.getElementById("inputName").value;
-            const fieldEmail = document.getElementById("inputEmail").value;
+            const fieldPwd = document.getElementById("inputPwd");
+            const fieldName = document.getElementById("inputName");
+            const fieldEmail = document.getElementById("inputEmail");
 
             if(this.pwdCheck == true){
                 alert("비밀번호를 확인해 주세요!");
@@ -144,7 +145,7 @@ export default{
             }
 
             if(confirm("정보를 수정하시겠습니까?")){
-                if((fieldPwd!=='')&&(fieldName!=='')&&(fieldEmail!='')){
+                if((fieldPwd.value !=='')&&(fieldName.value !=='')&&(fieldEmail.value !='')){
                     axios.put('/api/member/mod-member', this.member)
                     .then(()=>{
                         alert("정보 수정이 완료되었습니다!");
@@ -153,6 +154,15 @@ export default{
                     .catch(()=>{
                         alert("정보 수정에 실패하였습니다. 잠시 후에 다시 시도해 주세요.");
                     })
+                }else if(fieldPwd.value === null || fieldPwd.value === ''){
+                    alert("비밀번호를 입력해 주세요.");
+                    fieldPwd.focus();
+                }else if(fieldName.value === null || fieldName.value === ''){
+                    alert("이름을 입력해 주세요.");
+                    fieldName.focus();
+                }else if(fieldEmail.value === null || fieldEmail.value === ''){
+                    alert("이메일을 입력해 주세요.");
+                    fieldEmail.focus();
                 }
             }
         },

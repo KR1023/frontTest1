@@ -61,8 +61,6 @@ export default {
                 console.log("Failed Recieving ID");
             })
         }
-        
-        console.log(this.id);
     },
     methods: {
         viewArticle(payload){
@@ -138,7 +136,20 @@ export default {
                 axios.post("/api/board/delete-article",payload)
                 .then(()=>{
                     alert("글을 삭제했습니다!");
-                    this.$router.push("manage-article");
+                    axios.post("/api/board/getId",this.$session.id())
+                    .then((response)=>{
+                        this.id = response.data;
+                        axios.post('/api/listArticles',this.id)
+                        .then((response)=>{
+                            this.articles = response.data;
+                        })
+                        .catch(()=>{
+                            alert("정보를 불러오는 데 실패했습니다.");
+                        })
+                    })
+                    .catch(()=>{
+                        console.log("Failed Recieving ID");
+                    })
                 })
                 .catch(()=>{
                     alert("글 삭제를 실패했습니다! 잠시 후에 다시 시도해 주세요.");
